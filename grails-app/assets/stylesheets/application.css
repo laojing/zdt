@@ -1,0 +1,120 @@
+
+body {
+	background-color: powderblue;
+}
+
+/* MainPage */
+.mainpage {
+	width:100%;
+ 	margin-top: 70px;
+}
+.container {
+	width:100%;
+}
+
+.seperator {
+	border-bottom: 2px dotted #ccc;
+	margin: 10px 0;
+}
+
+@navbar-inverse-bg {
+}
+
+
+/* Main Panel */
+.panel {
+	background-color: #fff;
+	border-radius: 4px;
+	border : 1px solid transparent;
+	box-shadow: 0px 0px 5px #c2c2c2;
+}
+
+
+
+.panel > .panel-heading {
+	color: #fff;
+	background-color: #3d4450;
+	border-color: #080808;
+}
+.panel-heading {
+	padding: 8px 15px;
+	border-bottom: 1px solid transparent;
+	font-size: 14px;
+	line-height: 14px;
+}
+
+.panel-heading a {
+	color: #fff;
+}
+
+.panel-heading select {
+	margin-left: 100px;
+}
+
+.itemtable {
+	height: 80px;
+	width: 100%;
+	font-size:12px;
+	text-align: center;
+}
+.temtable td {
+	color: #666;
+}
+.itemtable tr {
+	border-bottom: 1px dotted #ccc;
+}
+.itemtable tr:last-child {
+	border: none;
+}
+.suttable {
+	font-size:12px;
+	text-align: left;
+}
+.suttable th {
+	text-align: center;
+}
+.suttable td {
+	padding-left:10px;
+	color: #669;
+}
+.suttable tr {
+	border-bottom: 1px dotted #ccc;
+}
+.suttable tr:last-child {
+	border: none;
+}
+.suttable img {
+	height: 20px;
+	vertical-align:middle;
+}
+
+
+.followtable {
+	height:100px;
+	margin-top:10px;
+	font-size:10px;
+	text-align: left;
+}
+.followtable th {
+	background-color: #6d7480;
+	color: #fff;
+	text-align: center;
+}
+.followtable td {
+	text-align: center;
+	color: #669;
+}
+.followtable tr {
+	border-bottom: 1px dotted #ccc;
+}
+
+td {
+    min-height: 50px;
+}
+
+.table td {
+	text-align: center;
+}
+.table th {
+	text-align: center;
+}
