@@ -79,7 +79,7 @@ var seturl = "${createLink(controller='power',action:'setdefault')}";
 function SetDefault ( turbtype ) {
 	$.getJSON(url, {turbtype:turbtype}, function(data) {
 		for ( var i=0; i<data.defaults.length; i++ ) {
-			$('#power'+(i+1)).val(data.defaults[i].power);
+			$('#power'+(i+1)).val(data.defaults[i+2].power);
 		}
 	});
 }
@@ -96,7 +96,7 @@ function SaveData() {
 	sets += $('#power19').val();
 	$.getJSON(seturl, {turbtype:$('#classes').val(),values:sets}, function(data) {
 		for ( var i=0; i<data.defaults.length; i++ ) {
-			$('#power'+(i+1)).val(data.defaults[i].power);
+			$('#power'+(i+1)).val(data.defaults[i+2].power);
 		}
 	});
 }
@@ -106,7 +106,6 @@ $(document).ready(function(){
 });
 
 </script>
-
 
 	</body>
 </html>

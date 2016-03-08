@@ -19,12 +19,10 @@ class FollowController {
 	@Secured ( ['ROLE_ADMIN','ROLE_USER'] )
     def temp() { }
 
-
-	@Secured ( ['ROLE_ADMIN'] )
   	def getupdatedata() {
-		def cur = (new Date().getTime() / 1000.0) as int
+		def lasttime = Ten.findAll( 'from Ten as a order by a.savetime desc', [max:1] )[0].savetime
+		def good = Ten.findAll ( 'from Ten as a where a.savetime='+lasttime+' order by a.turbnum')
 		def effi = Follow.list ( sort:'turbnum' )
-		def good = Ten.findAll ( 'from Ten as a where a.turbnum=0 and a.savetime>'+(cur-3600*24)+' and a.savetime<='+cur+' order by a.savetime')
 		render(contentType:"text/json"){[effi:effi,real:good]}
 	}
 }

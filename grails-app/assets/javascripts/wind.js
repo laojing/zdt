@@ -45,14 +45,9 @@ function drawLine ( context, rad, radius1, radius2, x, y ) {
 	context.lineTo ( x2, y2 );
 }
 
-var alarm = 0;
 function UpdateWindPic( over ) {
 	$.getJSON(windurl, function(data) {
 		var total = 0;
-		if ( alarm == 0 && data.total.length == 0 ) {
-			alarm = 1;
-			alert ( '数据库更新错误！所有数值只是页面展示作用！' );
-		}
 		for ( var i=1; i<data.total.length; i++ ) {
 			/*
 			while ( data.total[i].position>360 ) data.total[i].position-=360;
@@ -64,16 +59,8 @@ function UpdateWindPic( over ) {
 	});
 }
 
-var tttt;
 function DrawTurbGround ( context, turbimg, pos, dir, value, x, y, index ) {
-	/*
-	var direrror = (pos - dir)*Math.PI/180;
-	while ( direrror > Math.PI ) direrror -= 2*Math.PI;
-	while ( direrror < -Math.PI ) direrror += 2*Math.PI;
-	*/
 	var direrror = dir*Math.PI/180;
-	tttt = direrror;
-	
 
 	context.drawImage ( turbimg, x-30, y-30 );
 
@@ -83,12 +70,12 @@ function DrawTurbGround ( context, turbimg, pos, dir, value, x, y, index ) {
 	if ( value > 33 ) context.fillStyle = 'rgba(0,0,100,0.5)';
 	context.fill( path );
 
-	var lab = sprintf ( "%02d", value );
+	var lab = sprintf ( "%d", value );
 	if ( index == 100 ) lab = "风机号";
 	var metrics = context.measureText ( lab );
 	context.fillStyle = 'rgba(100,100,100,0.9)';
-	context.fillText ( lab, x-15-metrics.width, y-12 );
-	lab = sprintf ( "%03d°", direrror*180/Math.PI );
+	context.fillText ( lab, x-8-metrics.width, y-12 );
+	lab = sprintf ( "%d°", direrror*180/Math.PI );
 	if ( index == 100 ) lab = "偏航误差";
 	context.fillText ( lab, x+10, y-12 );
 
@@ -154,12 +141,12 @@ function DrawWindPic ( over, overdir, total ) {
 	}
 
 	// 左上角方向
-	for( var j=34; j<total.length; j++ ) {
+	for( var j=0; j<total.length; j++ ) {
 		var path = new Path2D();
 		var rad = (total[j].position + total[j].direct)*Math.PI/180;
 		var x1 = mWidth/2 + radius * Math.cos(rad - Math.PI/2);
 		var y1 = mHeight/2 + radius * Math.sin(rad - Math.PI/2);
-		path.arc ( x1, y1, 1, 0, Math.PI*2 );
+		path.arc ( x1, y1, 2, 0, Math.PI*2 );
 		context.fillStyle = "#a00";
 		context.fill( path );
 	}
@@ -218,13 +205,7 @@ function DrawWindPic ( over, overdir, total ) {
 function UpdateSectorPic( over ) {
 	$.getJSON(sectorurl, function(data) {
 		var total = 0;
-		if ( alarm == 0 && data.total.length == 0 ) {
-			alarm = 1;
-			alert ( '数据库更新错误！所有数值只是页面展示作用！' );
-		}
 		for ( var i=1; i<data.total.length; i++ ) {
-			while ( data.total[i].position>360 ) data.total[i].position-=360;
-			while ( data.total[i].position<-360 ) data.total[i].position+=360;
 			total += data.total[i].position;
 		}
 		DrawSectorPic ( over, total/66, data.total );
@@ -261,7 +242,6 @@ function DrawSectorPic ( over, overdir, total ) {
 	context.stroke();
 	context.font = "10px 'LiHei Pro'";
 
-
 	for ( var i=0; i<16; i++ ) {
 		context.beginPath(); 
 		context.fillStyle = "#666"; 
@@ -289,31 +269,22 @@ function DrawSectorPic ( over, overdir, total ) {
 	for ( var i=0; i<turbpos.length; i++ ) {
 		var x = width*(turbpos[i].x - minx)/(maxx - minx);
 		var y = height - height*(turbpos[i].y - miny)/(maxy - miny);
-		if ( total.length > i ) {
 		DrawTurbSector ( context, turbimg, 
 				total[i].position, 
 				total[i].direct,
 				turbpos[i].v, x, y, i );
-		} else {
-		DrawTurbSector ( context, turbimg, 
-				60,90,
-				turbpos[i].v, x, y, i );
-		}
 	}
 
 	context.restore();
 }
 
 function DrawTurbSector ( context, turbimg, pos, dir, value, x, y, index ) {
-	var direrror = (pos - dir)*Math.PI/180;
-	while ( direrror > Math.PI ) direrror -= 2*Math.PI;
-	while ( direrror < -Math.PI ) direrror += 2*Math.PI;
 	if ( value == 5 
 			|| value == 7
 			|| value == 6 ) {
 		context.drawImage ( turbimgred, x-15, y-10 );
 
-		var lab = sprintf ( "%02d", value );
+		var lab = sprintf ( "%d", value );
 		var metrics = context.measureText ( lab );
 		context.fillStyle = 'rgba(100,100,100,0.9)';
 		context.fillText ( lab, x-metrics.width/2, y-12 );
@@ -321,6 +292,5 @@ function DrawTurbSector ( context, turbimg, pos, dir, value, x, y, index ) {
 		context.drawImage ( turbimg, x-10, y-10 );
 	}
 }
-
 
 

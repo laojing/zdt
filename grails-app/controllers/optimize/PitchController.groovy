@@ -9,17 +9,37 @@ class PitchController {
 	}
 
   	def getpitchdata() {
-		def cur = (new Date().getTime() / 1000.0) as int
-		def good = Ten.findAll ( 'from Ten as a where a.savetime>'+(cur-600)+' and a.savetime<='+cur+' order by a.turbnum')
-		def gains = Pitch.findAll ( 'from Pitch as a where a.savetime>'+(cur-60*60*24*7)+' and a.savetime<='+cur+' order by a.turbnum')
+		def lasttime = Ten.findAll( 'from Ten as a order by a.savetime desc', [max:1] )[0].savetime
+		def good = Ten.findAll ( 'from Ten as a where a.savetime='+lasttime+' order by a.turbnum')
+		def gains = Pitch.findAll ( 'from Pitch as a where a.savetime>'+(lasttime-60*60*24*7)+' and a.savetime<='+lasttime+' order by a.turbnum')
 		render(contentType:"text/json"){[tens:good,gains:gains]}
 	}
 
   	def getupdatedata() {
-		def cur = (new Date().getTime() / 1000.0) as int
-		def good = Ten.findAll ( 'from Ten as a where a.turbnum='+params.turbinenum+' and a.savetime>'+(cur-3600*24)+' and a.savetime<='+cur+' order by a.savetime')
+		def lasttime = Ten.findAll( 'from Ten as a order by a.savetime desc', [max:1] )[0].savetime
+		def good = Ten.findAll ( 'from Ten as a where a.savetime='+lasttime+' order by a.turbnum')
 		render(contentType:"text/json"){[real:good]}
 	}
+
+	def getlinedata () {
+		def start = (params.start as int)
+		def end = (params.end as int)
+		def total = Pitch.findAll('from Pitch as a where a.turbnum='+params.turbinenum+ ' and a.savetime>='+start+' and a.savetime<='+end+' order by savetime')
+		render(contentType:"text/json"){[total:total]}
+	}
+
+	def gettypedata () {
+		def ttime = (params.turbinetime as int)
+		def ttype = (params.turbinetype as int)
+		if( ttype == 1 ) {
+			def total = Pitch.findAll('from Pitch as a where a.turbnum<=33 and a.savetime>='+(ttime-60*60*24*7)+' and a.savetime<='+ttime+' order by turbnum')
+			render(contentType:"text/json"){[total:total]}
+		} else {
+			def total = Pitch.findAll('from Pitch as a where a.turbnum>33 and a.savetime>='+(ttime-60*60*24*7)+' and a.savetime<='+ttime+' order by turbnum')
+			render(contentType:"text/json"){[total:total]}
+		}
+	}
+
 
 	@Secured ( ['ROLE_ADMIN','ROLE_USER'] )
   	def compare() { }

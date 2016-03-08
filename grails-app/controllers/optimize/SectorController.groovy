@@ -8,8 +8,8 @@ class SectorController {
     def index() { }
 
  	def getcurdata() {
-		def cur = (new Date().getTime() / 1000.0) as int
-		def good = Ten.findAll ( 'from Ten as a where a.savetime>'+(cur-600)+' and a.savetime<='+cur+' order by a.turbnum')
+		def lasttime = Ten.findAll( 'from Ten as a order by a.savetime desc', [max:1] )[0].savetime
+		def good = Ten.findAll ( 'from Ten as a where a.savetime='+lasttime+' order by a.turbnum')
 		render(contentType:"text/json"){[total:good]}
 	}
 

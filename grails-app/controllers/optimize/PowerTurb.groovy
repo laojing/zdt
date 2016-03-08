@@ -37,47 +37,15 @@ class PowerTurb {
 
 	def calcBin ( data ) {
 		data.each { it ->
-			if( turbnum == it.turbnum ) {
-				def index = (it.Wind*2) as int
-				if( index < 50 && isGood(it) ) {
-					bins[index].addWind ( it.Wind )
-					bins[index].addPower ( it.Power )
-				}
+			def index = (it.Wind*2) as int
+			if( index < 50 && isGood(it) ) {
+				bins[index].addWind ( it.Wind )
+				bins[index].addPower ( it.Power )
 			}
 		}
 		bins.each { it ->
 			it.calcBin()
 		}
-	}
-
-	def calcAvg ( avg ) {
-		for ( int i=0; i<50; i++ ) {
-			if ( bins[i].num > 0 ) {
-				avg.bins[i].num++
-				avg.bins[i].w += bins[i].w
-				avg.bins[i].p += bins[i].p
-			}
-		}
-	}
-	def genAvg () {
-		for ( int i=0; i<50; i++ ) {
-			if ( bins[i].num > 0 ) {
-				bins[i].w /= bins[i].num
-				bins[i].p /= bins[i].num
-			}
-		}
-	}
-
-	def calcEffi ( avg ) {
-		float num = 0
-		effi = 0.0
-		for ( int i=0; i<50; i++ ) {
-			if ( bins[i].num > 0 ) {
-				effi += (bins[i].p - avg.bins[i].p) / avg.bins[i].p
-				num += 1.0
-			}
-		}
-		if ( num > 0.5 ) effi /= num
 	}
 }
 

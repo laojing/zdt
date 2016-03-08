@@ -1,18 +1,9 @@
-var alarm = 0;
-var ttt = 1;
 function UpdateOverFarm () {
 	$.getJSON(GetHref('updateover','index'), function(data) {
-		if ( alarm == 0 && data.real.length == 0 ) {
-			alarm = 1;
-//			alert ( '数据库更新错误！所有数值只是页面展示作用！' );
-		}
-		if ( data.real.length == 0 ) {
-			$('#connectstate').html ( '数据库更新错误！所有数值只是页面展示作用！' );
-		} else {
-			$('#connectstate').html ( '数据库更新正常' );
-		}
-		ttt = data.follow;
 
+		var cur = new Date();
+		cur.setTime( data.lasttime*1000 );
+		$('#connectstate').html ( '更新时间:'+cur.toLocaleString() );
 		var effilen1 = data.effi1.length;
 		var effilen2 = data.effi2.length;
 		var pitchlen1 = data.pitch1.length;
@@ -66,7 +57,7 @@ function UpdateOverFarm () {
 		}
 		if ( data.real.length > 0 ) {
 			$('#totalwind').html(parseFloat(data.real[0].wind).toFixed(2)+' m/s');
-			$('#totalpower').html((parseFloat(data.real[0].power)/1000).toFixed(2)+' MW');
+			$('#totalpower').html((parseFloat(data.real[0].power)/1000).toFixed(1)+' MW');
 		} else {
 			$('#totalwind').html(10.3 +' m/s');
 			$('#totalpower').html(34.5 +' MW');
@@ -106,11 +97,11 @@ function DrawTurbGround ( context, power, value, x, y, index ) {
 	if ( value > 33 ) context.fillStyle = 'rgba(50,50,100,0.9)';
 	context.fill( path );
 
-	var lab = sprintf ( "%02d", value );
+	var lab = sprintf ( "%d", value );
 	var metrics = context.measureText ( lab );
 	context.fillStyle = 'rgba(250,250,250,1)';
 	context.fillText ( lab, x-metrics.width/2, y-5 );
-	lab = sprintf ( "%04d", power );
+	lab = sprintf ( "%d", power );
 	metrics = context.measureText ( lab );
 //	context.fillStyle = 'rgba(250,50,50,1)';
 	context.fillText ( lab, x-metrics.width/2, y+8 );

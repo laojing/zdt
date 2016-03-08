@@ -42,7 +42,7 @@
 				document.write ( '		<table class="itemtable">' );
 				document.write ( '			<tr> <td>风&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向:</td> <td id="kk1'+(i*8+j)+'" style="min-width: 30px;">---</td> </tr>' );
 				document.write ( '			<tr> <td>机舱位置:</td> <td id="kk2'+(i*8+j)+'" style="min-width: 30px;">---</td> </tr>' );
-				document.write ( '			<tr> <td>偏航误差:</td> <td style="min-width: 30px;margin: 5px;color:white;background-color: green;" id="kk2'+(i*8+j)+'">---</td> </tr>' );
+				document.write ( '			<tr> <td>偏航误差:</td> <td style="min-width: 30px;margin: 5px;color:white;background-color: green;" id="kk3'+(i*8+j)+'">---</td> </tr>' );
 				document.write ( '		</table>' );
 				document.write ( '	</div>' );
 				document.write ( '</div>' );
@@ -63,7 +63,7 @@
 			document.write ( '		<table class="itemtable">' );
 				document.write ( '			<tr> <td>风&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;向:</td> <td id="kk1'+(i*8+j)+'" style="min-width: 30px;">---</td> </tr>' );
 				document.write ( '			<tr> <td>机舱位置:</td> <td id="kk2'+(i*8+j)+'" style="min-width: 30px;">---</td> </tr>' );
-				document.write ( '			<tr> <td>偏航误差:</td> <td style="min-width: 30px;margin: 5px;color:white;background-color: green;" id="kk2'+(i*8+j)+'">---</td> </tr>' );
+				document.write ( '			<tr> <td>偏航误差:</td> <td style="min-width: 30px;margin: 5px;color:white;background-color: green;" id="kk3'+(i*8+j)+'">---</td> </tr>' );
 			document.write ( '		</table>' );
 			document.write ( '	</div>' );
 			document.write ( '</div>' );
@@ -80,8 +80,10 @@
 
 var windurl = "${createLink(controller='pitch',action:'getwinddata')}";
 
-function UpdateOver() {
+var hhh;
+function UpdateYawData() {
 	$.getJSON(windurl, function(data) {
+		hhh = data.tens;
 		var turb = $('#turbinetype').val();
 		if ( turb == 1 ) {
 			for ( var i=1; i<34; i++ ) {
@@ -92,7 +94,7 @@ function UpdateOver() {
 		} else {
 			for ( var i=1; i<26; i++ ) {
 				$('#kk1'+(i)).html( (data.tens[i+33].position - data.tens[i+33].direct).toFixed(2) + '°' );
-				$('#kk2'+(i)).html( data.tens[(i+33)].postion.toFixed(2) + '°' );
+				$('#kk2'+(i)).html( data.tens[(i+33)].position.toFixed(2) + '°' );
 				$('#kk3'+(i)).html( data.tens[(i+33)].direct.toFixed(2) + '°' );
 			}
 			for ( var i=26; i<32; i++ ) {
@@ -102,11 +104,13 @@ function UpdateOver() {
 			}
 		}
 	});
+}
+function UpdateOver() {
+	UpdateYawData();
 	window.setTimeout ( UpdateOver, UPDATESPAN );
 }
 
 $(document).ready(function(){
-	UpdateOver();
 	TurbTypeChange();
 });
 
@@ -128,6 +132,7 @@ function TurbTypeChange () {
 			$('#turbinetitle'+i).html('金风'+i+'号');
 		}
 	}
+	UpdateYawData();
 }
 </script>
 

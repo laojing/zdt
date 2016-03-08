@@ -12,10 +12,10 @@
 </div>
 
 
-<div style="position:absolute;left:50%;top:80px;width:280px;color:#666;font-size:16px;font-weight:bold;">
-风速：<span id="totalwind" style="color:#222;"></span>
+<div style="position:absolute;left:320px;top:80px;width:280px;color:#666;font-size:16px;font-weight:bold;">
+V:<span id="totalwind" style="color:#222;"></span>
 <br/>
-功率：<span id="totalpower" style="color:#222;"></span>
+P:<span id="totalpower" style="color:#222;"></span>
 </div>
 <div style="position:absolute;left:20px;top:70px;width:280px;" class="panel panel-primary">
 <div class="panel-heading"><script>document.write(OptNames[0][0][0]);</script></div>
@@ -150,8 +150,6 @@ $(window).resize(function(){
 });
 
 </script>
-
     </body>
 </html>
-
 

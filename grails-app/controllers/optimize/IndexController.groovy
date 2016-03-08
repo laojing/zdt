@@ -14,8 +14,10 @@ class IndexController {
 	}
 
 	def updateover() {
+		def lasttime = Ten.findAll( 'from Ten as a order by a.savetime desc', [max:1] )[0].savetime
 		def cur = (new Date().getTime() / 1000.0) as int
-		def real = Ten.findAll ( 'from Ten as a where a.savetime>'+(cur-600)+' and a.savetime<='+cur+' order by a.turbnum')
+		//def real = Ten.findAll ( 'from Ten as a where a.savetime>'+(cur-600)+' and a.savetime<='+cur+' order by a.turbnum')
+		def real = Ten.findAll ( 'from Ten as a where a.savetime='+lasttime+' order by a.turbnum')
 		def effi1 = Effi.findAll ( 'from Effi as a where a.turbnum<=33 and a.value>-123.456 order by a.value desc' )
 		def effi2 = Effi.findAll ( 'from Effi as a where a.value>-123.456 and a.turbnum>33 order by a.value desc' )
 
@@ -27,6 +29,6 @@ class IndexController {
 
 		def follow = Follow.findAll ( 'from Follow as a order by a.turbnum' )
 
-		render(contentType:"text/json"){[real:real,effi1:effi1,effi2:effi2,pitch1:pitch1,pitch2:pitch2,wind1:wind1,wind2:wind2,follow:follow]}
+		render(contentType:"text/json"){[lasttime:lasttime,real:real,effi1:effi1,effi2:effi2,pitch1:pitch1,pitch2:pitch2,wind1:wind1,wind2:wind2,follow:follow]}
 	}
 }

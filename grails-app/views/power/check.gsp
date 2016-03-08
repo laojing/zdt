@@ -181,6 +181,7 @@ function DispChange () {
 }
 
 $(document).ready(function(){
+
 	for ( var i=1; i<=33; i++ ) {
 		$('#turbinenum').append("<option value='"+i+"'>金风"+i+"号机组</option>");
 	}

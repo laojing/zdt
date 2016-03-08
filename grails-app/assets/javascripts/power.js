@@ -1,61 +1,44 @@
-var alarm = 0;
-
-var ttt;
 // Main Power
 function UpdatePowerMain( url, parentreal, canreal, parenterror, canerror ) {
 	$.getJSON(url, function(data) {
-		ttt = data.effi.length;
-		if ( alarm == 0 && data.effi.length == 0 ) {
-			alarm = 1;
-			alert ( '数据库更新错误！所有数值只是页面展示作用！' );
-		}
 
 		var realwind = new Array();
 		var realpower = new Array();
 		var midpower = new Array();
 		var badpower = new Array();
-		if ( data.effi.length > 0 ) {
-			for ( var i=0; i<data.real.length; i++ ) {
-				realpower[i] = {x:data.real[i].savetime,y:data.real[i].power};
-				realwind[i] = {x:data.real[i].savetime,y:data.real[i].wind};
-			}
+		for ( var i=0; i<data.real.length; i++ ) {
+			realpower[i] = {x:data.real[i].savetime,y:data.real[i].power};
+			realwind[i] = {x:data.real[i].savetime,y:data.real[i].wind};
+		}
+
+		if ( data.effi.length > 2 ) {
 			for ( var i=0; i<data.mid.length; i++ ) {
 				midpower[i] = {x:data.mid[i].savetime,y:data.mid[i].power};
 			}
 			for ( var i=0; i<data.bad.length; i++ ) {
 				badpower[i] = {x:data.bad[i].savetime,y:data.bad[i].power};
 			}
-		} else {
-			for ( var i=0; i<66; i++ ) {
-				data.effi[i] = {turbnum:i+1,value:0.4-i*0.01};
-			}
-			var start = new Date()/1000-(3600*24);
-			for ( var i=0; i<144; i++ ) {
-				realpower[i] = {x:start+i*600,y:20000+(Math.sin(i)*10000)};
-				realwind[i] = {x:start+i*600,y:10+(Math.sin(i)*5)};
-				midpower[i] = {x:start+i*600,y:800+(Math.sin(i)*10)};
-				badpower[i] = {x:start+i*600,y:800+(Math.sin(i)*10)};
-			}
-			data.badturb = 45;
+			DrawPowerError ( parenterror, canerror, midpower, badpower, data.badturb );
 		}
 
-		$('#effit1').html ( GetTurbName(data.effi[0].turbnum) );
-		$('#effit2').html ( GetTurbName(data.effi[1].turbnum) );
-		$('#effit3').html ( GetTurbName(data.effi[2].turbnum) );
-		$('#effi1').html ( (Math.floor(data.effi[1].value*10000))/100.0+'%' );
-		$('#effi2').html ( (Math.floor(data.effi[2].value*10000))/100.0+'%' );
-		$('#effi3').html ( (Math.floor(data.effi[3].value*10000))/100.0+'%' );
+		if ( data.effi.length > 6 ) {
+			$('#effit1').html ( GetTurbName(data.effi[0].turbnum) );
+			$('#effit2').html ( GetTurbName(data.effi[1].turbnum) );
+			$('#effit3').html ( GetTurbName(data.effi[2].turbnum) );
+			$('#effi1').html ( (Math.floor(data.effi[1].value*10000))/100.0+'%' );
+			$('#effi2').html ( (Math.floor(data.effi[2].value*10000))/100.0+'%' );
+			$('#effi3').html ( (Math.floor(data.effi[3].value*10000))/100.0+'%' );
 
-		var len = data.effi.length;
-		$('#effit-1').html ( GetTurbName(data.effi[len-1].turbnum) );
-		$('#effit-2').html ( GetTurbName(data.effi[len-2].turbnum) );
-		$('#effit-3').html ( GetTurbName(data.effi[len-3].turbnum) );
-		$('#effi-1').html ( (Math.floor(data.effi[len-1].value*10000))/100.0+'%' );
-		$('#effi-2').html ( (Math.floor(data.effi[len-2].value*10000))/100.0+'%' );
-		$('#effi-3').html ( (Math.floor(data.effi[len-3].value*10000))/100.0+'%' );
+			var len = data.effi.length;
+			$('#effit-1').html ( GetTurbName(data.effi[len-1].turbnum) );
+			$('#effit-2').html ( GetTurbName(data.effi[len-2].turbnum) );
+			$('#effit-3').html ( GetTurbName(data.effi[len-3].turbnum) );
+			$('#effi-1').html ( (Math.floor(data.effi[len-1].value*10000))/100.0+'%' );
+			$('#effi-2').html ( (Math.floor(data.effi[len-2].value*10000))/100.0+'%' );
+			$('#effi-3').html ( (Math.floor(data.effi[len-3].value*10000))/100.0+'%' );
+		}
 
 		DrawPowerReal ( parentreal, canreal, realpower, realwind );
-		DrawPowerError ( parenterror, canerror, midpower, badpower, data.badturb );
 	});
 }
 
@@ -113,7 +96,7 @@ function DrawPowerCheck ( parentdiv, canid, data ) {
 	drawBackground ( context, can.width, can.height, 20, 40, 70, 40, 3, 5, 0.1, '#666666' );
 	drawYLabel ( context, can.width, can.height, 20, 40, 0, 70, 40, 3, 5, "%.0f", 0.8, lineColorsPowers[0], 0, 1500, '功率(kW)' );
 	drawXLabel ( context, can.width, can.height, 20, 40, 70, 40, 5, 5, "%.0f", 0.8, '#666666', 0, 25, '风速(m/s)', 0 );
-	drawLine ( context, can.width, can.height, 20, 40, 70, 40, 3, lineColorsPowers[0], 0, 25, 0, 1500, data );
+	drawPowerLine ( context, can.width, can.height, 20, 40, 70, 40, 3, lineColorsPowers[0], 0, 25, 0, 1500, data );
 }
 
 function DrawPowerCompare ( parentdiv, canid, data ) {

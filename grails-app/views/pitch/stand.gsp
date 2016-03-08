@@ -112,7 +112,6 @@ function SetDefault ( turbtype ) {
 }
 
 function ChangeClass() {
-	alert ( $('#classes').val() );
 	SetDefault ( $('#classes').val() );
 }
 

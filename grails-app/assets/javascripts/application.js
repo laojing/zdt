@@ -1,8 +1,10 @@
-var UPDATESPAN = 5000;
+var UPDATESPAN = 300000;   // 5分钟
+
 //[['偏航预判','wind','index'],[['偏航总览','wind','yaw'],['偏航损耗','wind','lost'],['参数调整','wind','change']]],
+//[['偏航预判','wind','index'],[['偏航总览','wind','yaw'],['偏航损耗','wind','lost']]],
 var OptNames = [ [['功率评估','power','index'],[['功率排名','power','effi'],['功率查询','power','check'],['标准功率','power','stand']]],
 				[['转矩优化','pitch','index'],[['实时曲线','pitch','real'],['曲线拟合','pitch','fitting'],['拟合比较','pitch','compare'],['标准转矩','pitch','stand']]],
-				[['偏航预判','wind','index'],[['偏航总览','wind','yaw'],['偏航损耗','wind','lost']]],
+				[['偏航预判','wind','index'],[['偏航总览','wind','yaw']]],
 				[['扇区管理','sector','index'],[]],
 				[['动态无功','follow','index'],[['无功分配','follow','dist'],['无功数据','follow','data']]] ];
 
