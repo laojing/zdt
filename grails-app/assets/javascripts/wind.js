@@ -70,6 +70,8 @@ function DrawTurbGround ( context, turbimg, pos, dir, value, x, y, index ) {
 	if ( value > 33 ) context.fillStyle = 'rgba(0,0,100,0.5)';
 	context.fill( path );
 
+	direrror = (Math.PI/22) + (Math.PI/22/3)*Math.random();
+
 	var lab = sprintf ( "%d", value );
 	if ( index == 100 ) lab = "风机号";
 	var metrics = context.measureText ( lab );
