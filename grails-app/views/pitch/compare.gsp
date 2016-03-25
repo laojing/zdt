@@ -14,12 +14,12 @@
 	<div class="container">
 
 	<div class="row">
-	<div class="col-lg-3 col-md-12">
+	<div class="col-lg-12 col-md-12">
 	<div id="condition" class="panel">
-		<div class="panel-heading">数据点选择</div>
+		<div class="panel-heading">同比</div>
 		<div class="content">
 			<div class="row" style="height:100%;">
-				<div class="col-xs-12 col-lg-12" style="height:100%;">
+				<div class="col-xs-12 col-lg-3" style="height:100%;">
 					<table class="suttable" style="height:100%;width:95%;">
 					<tr><td>开始：</td><td>
 						<div class="input-group date form_datetime" data-date="2015-08-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii" data-link-field="dtp_start">
@@ -40,21 +40,19 @@
 					</td></tr>
 					</table>
 				</div>
+				<div class="col-xs-12 col-lg-9" style="height:100%;">
+					<div class="content" style="height:100%" id="canselfparent">
+						<canvas id="canself"></canvas>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
+
+	</div>
 	</div>
 
-	<div class="col-lg-9 col-md-12">
-	<div id="variables" class="panel">
-		<div class="panel-heading">同比</div>
-		<div class="content" id="canselfparent">
-		<canvas id="canself"></canvas>
-		</div>
-	</div>
-	</div>
-	</div>
-	
+
 	<div class="row">
 	<div class="col-lg-12 col-md-12">
 	<div id="curves" class="panel">
@@ -117,12 +115,12 @@ function DrawSelfCompare ( parentdiv, canid, data ) {
 
 	if( varturbinenum <= 33 ) {
 		drawBackground ( context, can.width, can.height, 20, 65, 70, 40, 4, 12, 0.1, '#666666' );
-		drawYLabel ( context, can.width, can.height, 20, 65, 0, 70, 40, 4, 1, "%.0f", 0.8, lineColorsCompare[0], 0, 1600, '转矩系数' );
-		drawXLabel ( context, can.width, can.height, 20, 65, 70, 40, data.length, 1, "%.0f", 0.1, '#666666', data, 'm/s', 1 );
+		drawYLabel ( context, can.width, can.height, 20, 65, 0, 70, 40, 4, 1, "%.0f", 0.8, lineColorsCompare[0], 1450, 1500, '转矩系数' );
+		drawXLabel ( context, can.width, can.height, 20, 65, 70, 40, data.length, 1, "%.0f", 2, '#666666', data, 'm/s', 1450, 1500, 1 );
 	} else {
 		drawBackground ( context, can.width, can.height, 20, 65, 70, 40, 4, 12, 0.1, '#666666' );
-		drawYLabel ( context, can.width, can.height, 20, 65, 0, 70, 40, 4, 1, "%.4f", 0.8, lineColorsCompare[0], 0, 0.002, '转矩系数' );
-		drawXLabel ( context, can.width, can.height, 20, 65, 70, 40, data.length, 1, "%.0f", 0.1, '#666666', data, 'm/s', 1 );
+		drawYLabel ( context, can.width, can.height, 20, 65, 0, 70, 40, 4, 1, "%.4f", 0.8, lineColorsCompare[0], 0.00115, 0.0012, '转矩系数' );
+		drawXLabel ( context, can.width, can.height, 20, 65, 70, 40, data.length, 1, "%.0f", 2, '#666666', data, 'm/s', 0.00115, 0.00120, 1 );
 	}
 }
 
@@ -163,11 +161,9 @@ function Resize() {
 	if ( height > 400 && width > 970 ) {
 		var clientheight = height - 180;
 		$('#condition > .content').height( clientheight*5/12 );
-		$('#variables > .content').height( clientheight*5/12 );
 		$('#curves > .content').height( clientheight*7/12 - 30 );
 	} else {
 		$('#condition > .content').height( 200 );
-		$('#variables > .content').height( 200 );
 		$('#curves > .content').height( width/2 );
 	}
 }

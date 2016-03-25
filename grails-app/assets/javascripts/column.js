@@ -16,7 +16,7 @@ function drawBackground ( context, width, height, Top, Bottom, Left, Right, YLin
 	context.restore();
 }
 
-function drawXLabel ( context, width, height, Top, Bottom, Left, Right, Line, SmallLine, Format, LineWidth, LineColor, data, Label, Type ) {
+function drawXLabel ( context, width, height, Top, Bottom, Left, Right, Line, SmallLine, Format, LineWidth, LineColor, data, Label, Min, Max, Type ) {
 
 	context.save();
 	context.beginPath();
@@ -47,20 +47,40 @@ function drawXLabel ( context, width, height, Top, Bottom, Left, Right, Line, Sm
 		context.fillText ( lab, 0, 0 );
 		context.restore();
 
-		var valuelen = data[i].optgain/1600*(height - Top - Bottom);
+		var valuelen = (data[i].optgain-Min)/(Max-Min)*(height - Top - Bottom);
 		lab = sprintf ( "%4.2f", data[i].optgain );
 		if( varturbinenum > 33 ) {
-			valuelen = data[i].optgain/0.002*(height - Top - Bottom);
+			valuelen = (data[i].optgain-Min)/(Max-Min)*(height - Top - Bottom);
 			lab = sprintf ( "%.6f", data[i].optgain );
 		}
+
+		/*
 		context.fillStyle = '#8080a8';
 		context.fillRect( Left + span*(i+0.3), 
 						height-Bottom-valuelen,
 						span*0.4, valuelen );
+						*/
 
 		var metrics = context.measureText ( lab );
 		context.fillText ( lab, Left + span*(i+0.5) - metrics.width/2, 
-				height - Bottom - valuelen - 3 );
+				height - Bottom - valuelen - 13 );
+	}
+	context.stroke();
+
+	for ( var i=0; i<=Line; i++ ) {
+		if( i==Line ) break;
+
+		var valuelen = (data[i].optgain-Min)/(Max-Min)*(height - Top - Bottom);
+		if( varturbinenum > 33 ) {
+			valuelen = (data[i].optgain-Min)/(Max-Min)*(height - Top - Bottom);
+		}
+		if ( i==0 ) {
+			context.moveTo( Left + span*(i+0.3) + span*0.2, 
+						height-Bottom-valuelen );
+		} else {
+			context.lineTo( Left + span*(i+0.3) + span*0.2, 
+						height-Bottom-valuelen );
+		}
 	}
 
 	context.lineWidth = LineWidth;
